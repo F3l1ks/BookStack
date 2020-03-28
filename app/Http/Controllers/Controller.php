@@ -157,10 +157,20 @@ abstract class Controller extends BaseController
      */
     protected function downloadResponse(string $content, string $fileName)
     {
-        return response()->make($content, 200, [
+	    $pathInfo = pathinfo($fileName);
+	    $fileExtension = $pathInfo['extension'];
+	    if($fileExtension == 'pdf') {
+		 return response()->make($content, 200, [
+            'Content-Type'        => 'application/pdf',
+            'Content-Disposition' => 'inline; filename="' . $fileName . '"'
+        ]);
+	    }
+	    else {
+		 return response()->make($content, 200, [
             'Content-Type'        => 'application/octet-stream',
             'Content-Disposition' => 'attachment; filename="' . $fileName . '"'
-        ]);
+        ]);   
+	    }
     }
 
     /**
