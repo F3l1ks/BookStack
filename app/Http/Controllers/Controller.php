@@ -157,8 +157,7 @@ abstract class Controller extends BaseController
      */
     protected function downloadResponse(string $content, string $fileName)
     {
-	    $pathInfo = pathinfo($fileName);
-	    $fileExtension = $pathInfo['extension'];
+	    $fileExtension = pathinfo($fileName)['extension'];
 	    if($fileExtension == 'pdf') {
 		 return response()->make($content, 200, [
             'Content-Type'        => 'application/pdf',
