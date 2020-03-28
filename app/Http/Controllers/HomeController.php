@@ -39,12 +39,20 @@ class HomeController extends Controller
         if (!in_array($homepageOption, $homepageOptions)) {
             $homepageOption = 'default';
         }
+        //Shelves for Kikli-Wiki 02/2020
+		$sort = setting()->getForCurrentUser('bookshelves_sort', 'name');
+        $order = setting()->getForCurrentUser('bookshelves_sort_order', 'asc');
+		$shelves = app(BookshelfRepo::class)->getAllPaginated(18, $sort, $order);
+        foreach ($shelves as $shelf) {
+               $shelf->books = $shelf->visibleBooks;
+        }
 
         $commonData = [
             'activity' => $activity,
             'recents' => $recents,
             'recentlyUpdatedPages' => $recentlyUpdatedPages,
             'draftPages' => $draftPages,
+            'shelves' => $shelves,
         ];
 
         // Add required list ordering & sorting for books & shelves views.
